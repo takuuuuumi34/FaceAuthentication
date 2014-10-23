@@ -100,7 +100,7 @@ public class PictureActivity extends Activity {
           FileOutputStream myFOS = null;
 
           try {
-            myFOS = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + "/camera_test.jpg");
+            myFOS = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + "/camera_test.bmp");
             myFOS.write(data);
             myFOS.close();
           } catch (Exception e) {
