@@ -1,6 +1,9 @@
 package com.example.takumi.faceauthentication;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +20,7 @@ public class PictureActivity extends Activity {
   private Camera myCamera;
   static private final int PREVIEW_WIDTH = 640;
   static private final int PREVIEW_HEIGHT = 480;
+  Intent intent = getIntent();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +112,13 @@ public class PictureActivity extends Activity {
           }
 
           camera.startPreview();
+          try {
+            System.out.println("表示！");
+
+          }catch(Exception e){
+
+          }
+
           finish();
         }
       }

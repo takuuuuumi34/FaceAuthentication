@@ -2,13 +2,30 @@ package com.example.takumi.faceauthentication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.net.Socket;
 
 
 public class MyActivity extends Activity {
+  public static int port = 60000;
+  public static String address = "192.168.110.95";
+  Socket echoSocket = null;
+  FileInputStream fis = null;
+  BufferedInputStream bin = null;
+  BufferedOutputStream bos = null;
+  DataOutputStream dos = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,5 +60,54 @@ public class MyActivity extends Activity {
         startActivity(intent);
         break;
     }
+  }
+
+  public void onClickAuthentication(View v){
+    Bitmap bmp = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath() + "/camera_test.bmp");
+    ImageView image1 = (ImageView)findViewById(R.id.imageView);
+    image1.setImageBitmap(bmp);
+    Runnable sender = new Runnable() {
+      @Override
+      public void run() {
+        try {
+          echoSocket = new Socket(address, port);
+          System.out.println("接続完了！");
+        }catch(Exception e){
+          e.printStackTrace();
+        }
+
+        try{
+          //send file
+          byte[] data = new byte[1024];
+          fis = new FileInputStream(Environment.getExternalStorageDirectory().getPath() + "/camera_test.bmp");
+          bin = new BufferedInputStream(fis);
+          bos = new BufferedOutputStream(echoSocket.getOutputStream());
+          dos = new DataOutputStream(bos);
+          int len;
+          while ((len = bin.read(data)) != -1) {
+            dos.write(data, 0, len);
+            dos.flush();
+          }
+          System.out.println("sent file");
+
+          dos.close();
+          bos.close();
+          bin.close();
+          fis.close();
+
+          if(echoSocket != null){
+            try{
+              echoSocket.close();
+            }catch(Exception e){
+              e.printStackTrace();
+            }
+          }
+        }catch(Exception e){
+          e.printStackTrace();
+        }
+      }
+    };
+    Thread th = new Thread(sender);
+    th.start();
   }
 }
