@@ -2,8 +2,6 @@ package com.example.takumi.faceauthentication;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
@@ -118,7 +116,7 @@ public class PictureActivity extends Activity {
           }catch(Exception e){
 
           }
-
+          setResult( Activity.RESULT_OK, intent );
           finish();
         }
       }

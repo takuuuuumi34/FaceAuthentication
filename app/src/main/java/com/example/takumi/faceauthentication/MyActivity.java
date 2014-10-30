@@ -33,7 +33,6 @@ public class MyActivity extends Activity {
         setContentView(R.layout.activity_my);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -57,15 +56,23 @@ public class MyActivity extends Activity {
     switch (v.getId()){
       case R.id.button:
         Intent intent = new Intent(this, PictureActivity.class);
-        startActivity(intent);
+        int requestCode = 1001;
+        startActivityForResult(intent, requestCode);
         break;
     }
   }
 
+  public void onActivityResult( int requestCode, int resultCode, Intent intent ){
+    if( requestCode == 1001 ){
+      if( resultCode == Activity.RESULT_OK ){
+        Bitmap bmp = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath() + "/camera_test.bmp");
+        ImageView image1 = (ImageView)findViewById(R.id.imageView);
+        image1.setImageBitmap(bmp);
+      }
+    }
+  }
+
   public void onClickAuthentication(View v){
-    Bitmap bmp = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath() + "/camera_test.bmp");
-    ImageView image1 = (ImageView)findViewById(R.id.imageView);
-    image1.setImageBitmap(bmp);
     Runnable sender = new Runnable() {
       @Override
       public void run() {
