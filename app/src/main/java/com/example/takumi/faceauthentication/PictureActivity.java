@@ -110,12 +110,6 @@ public class PictureActivity extends Activity {
           }
 
           camera.startPreview();
-          try {
-            System.out.println("表示！");
-
-          }catch(Exception e){
-
-          }
           setResult( Activity.RESULT_OK, intent );
           finish();
         }

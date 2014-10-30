@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.net.Socket;
@@ -22,8 +23,10 @@ public class MyActivity extends Activity {
   public static int port = 60000;
   public static String address = "192.168.110.95";
   Socket echoSocket = null;
+  Socket sendSocket = null;
   FileInputStream fis = null;
   BufferedInputStream bin = null;
+  DataInputStream din = null;
   BufferedOutputStream bos = null;
   DataOutputStream dos = null;
 
@@ -105,6 +108,31 @@ public class MyActivity extends Activity {
           if(echoSocket != null){
             try{
               echoSocket.close();
+            }catch(Exception e){
+              e.printStackTrace();
+            }
+          }
+        }catch(Exception e){
+          e.printStackTrace();
+        }
+
+        try {
+          sendSocket = new Socket(address, port);
+          System.out.println("接続完了！");
+        }catch(Exception e){
+          e.printStackTrace();
+        }
+
+        try{
+          byte[] data = new byte[1024];
+          din = new DataInputStream(sendSocket.getInputStream());
+          bin = new BufferedInputStream(din);
+          System.out.println(din.read());
+          din.close();
+
+          if(sendSocket != null){
+            try{
+              sendSocket.close();
             }catch(Exception e){
               e.printStackTrace();
             }
