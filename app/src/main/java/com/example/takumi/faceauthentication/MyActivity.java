@@ -6,29 +6,38 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.net.Socket;
 
 
 public class MyActivity extends Activity {
   public static int port = 60000;
-  public static String address = "192.168.110.95";
+  //public static String address = "192.168.110.102";
+  public static String address = "192.168.2.112";
   Socket echoSocket = null;
   Socket sendSocket = null;
   FileInputStream fis = null;
   BufferedInputStream bin = null;
   DataInputStream din = null;
+  Reader reader = null;
   BufferedOutputStream bos = null;
   DataOutputStream dos = null;
+  String name = "";
+  CharSequence nameCS;
+  Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,11 +133,27 @@ public class MyActivity extends Activity {
         }
 
         try{
-          byte[] data = new byte[1024];
           din = new DataInputStream(sendSocket.getInputStream());
           bin = new BufferedInputStream(din);
-          System.out.println(din.read());
+          reader = new InputStreamReader(bin, "Shift_JIS");
+          name = "";
+          for(;;) {
+            final int readChar = reader.read();
+            //Streamの終わりに達して読み込むデータがない場合
+            if ((char)readChar == '\0') break;
+            // charとして画面出力
+            name = name + (char)readChar;
+          }
+          nameCS = name;
+          //thread内からUI操作はできないのでhandlerにpostする。
+          mHandler.post(new Runnable() {
+            public void run() {
+              TextView textView = (TextView) findViewById(R.id.name);
+              textView.setText(nameCS);
+            }
+          });
           din.close();
+          bin.close();
 
           if(sendSocket != null){
             try{
