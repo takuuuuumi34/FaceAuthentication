@@ -13,18 +13,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
     <Button
-    android:layout_width="0dp"
+    android:layout_width="@dimen/zero"
     android:layout_height="wrap_content"
     android:layout_weight="1"
-    android:text="撮影する"
+    android:text="@string/button_1"
     android:id="@+id/button"
     android:onClick="onClick" />
 
   <Button
-    android:layout_width="0dp"
+    android:layout_width="@dimen/zero"
     android:layout_height="wrap_content"
     android:layout_weight="1"
-    android:text="照合する"
+    android:text="@string/button_2"
     android:id="@+id/button2"
     android:onClick="onClickAuthentication"/>
   </LinearLayout>
@@ -34,35 +34,95 @@
                 android:orientation="horizontal">
 
     <ImageView
-      android:layout_width="0dp"
+      android:layout_width="@dimen/zero"
       android:layout_height="wrap_content"
       android:layout_weight="1"
       android:id="@+id/imageView"/>
 
-    <LinearLayout android:layout_width="0dp"
+    <LinearLayout android:layout_width="@dimen/zero"
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
                   android:orientation="vertical">
       <TextView
-        android:id="@+id/name_label"
+        android:id="@+id/label_name"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:text="名前"
-        android:textSize="16sp"
+        android:layout_height="@dimen/text_height"
+        android:text="@string/label_name"
+        android:textSize="@dimen/text_size"
         android:textIsSelectable="false"
         android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="0dp"/>
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/zero"/>
       <TextView
         android:id="@+id/name"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/text_height"
         android:text=""
-        android:textSize="16sp"
+        android:textSize="@dimen/text_size"
         android:textIsSelectable="false"
         android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="0dp"/>
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/zero"/>
+      <TextView
+        android:id="@+id/label_sex"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/text_height"
+        android:text="@string/label_name"
+        android:textSize="@dimen/text_size"
+        android:textIsSelectable="false"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/zero"/>
+      <TextView
+        android:id="@+id/sex"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/text_height"
+        android:text=""
+        android:textSize="@dimen/text_size"
+        android:textIsSelectable="false"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/zero"/>
+      <TextView
+        android:id="@+id/label_birth"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/text_height"
+        android:text="@string/label_name"
+        android:textSize="@dimen/text_size"
+        android:textIsSelectable="false"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/zero"/>
+      <TextView
+        android:id="@+id/birth"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/text_height"
+        android:text=""
+        android:textSize="@dimen/text_size"
+        android:textIsSelectable="false"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/zero"/>
+      <TextView
+        android:id="@+id/label_address"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/text_height"
+        android:text="@string/label_name"
+        android:textSize="@dimen/text_size"
+        android:textIsSelectable="false"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/zero"/>
+      <TextView
+        android:id="@+id/address"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/text_height"
+        android:text=""
+        android:textSize="@dimen/text_size"
+        android:textIsSelectable="false"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/zero"/>
     </LinearLayout>
   </LinearLayout>
 

@@ -25,8 +25,8 @@ import java.net.Socket;
 
 public class MyActivity extends Activity {
   public static int port = 60000;
-  //public static String address = "192.168.110.102";
-  public static String address = "192.168.2.112";
+  public static String address = "192.168.110.88";
+  //public static String address = "192.168.2.112";
   Socket echoSocket = null;
   Socket sendSocket = null;
   FileInputStream fis = null;

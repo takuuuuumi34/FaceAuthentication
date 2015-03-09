@@ -2,7 +2,12 @@
 <resources>
 
     <string name="app_name">FaceAuthentication</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="button_1">撮影する</string>
+    <string name="button_2">照合する</string>
+    <string name="label_name">名前</string>
+    <string name="label_sex">性別</string>
+    <string name="label_address">住所</string>
+    <string name="label_birth">生年月日</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_picture">PictureActivity</string>
 
