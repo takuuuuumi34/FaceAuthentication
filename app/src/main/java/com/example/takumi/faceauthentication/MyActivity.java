@@ -13,6 +13,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -25,7 +31,7 @@ import java.net.Socket;
 
 public class MyActivity extends Activity {
   public static int port = 60000;
-  public static String address = "192.168.110.88";
+  public static String address = "192.168.110.129";
   //public static String address = "192.168.2.112";
   Socket echoSocket = null;
   Socket sendSocket = null;
@@ -38,6 +44,29 @@ public class MyActivity extends Activity {
   String name = "";
   CharSequence nameCS;
   Handler mHandler = new Handler();
+
+  private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+    @Override
+    public void onManagerConnected(int status) {
+      switch (status) {
+        case LoaderCallbackInterface.SUCCESS:
+        {
+          System.out.println("OpenCV loaded successfully");
+        }
+        break;
+        default:
+        {
+          super.onManagerConnected(status);
+        }
+        break;
+      }
+    }};
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_2_4_3, this, mLoaderCallback);
+  }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +106,12 @@ public class MyActivity extends Activity {
   public void onActivityResult( int requestCode, int resultCode, Intent intent ){
     if( requestCode == 1001 ){
       if( resultCode == Activity.RESULT_OK ){
-        Bitmap bmp = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath() + "/camera_test.bmp");
+        Bitmap bmp = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath() + "/camera_test.bmp").copy(Bitmap.Config.ARGB_8888, true);
         ImageView image1 = (ImageView)findViewById(R.id.imageView);
         image1.setImageBitmap(bmp);
+        Mat mat = new Mat();
+        Utils.bitmapToMat(bmp, mat);
+        System.out.println(mat.rows());
       }
     }
   }
@@ -97,6 +129,7 @@ public class MyActivity extends Activity {
 
         try{
           //send file
+
           byte[] data = new byte[1024];
           fis = new FileInputStream(Environment.getExternalStorageDirectory().getPath() + "/camera_test.bmp");
           bin = new BufferedInputStream(fis);
@@ -127,7 +160,7 @@ public class MyActivity extends Activity {
 
         try {
           sendSocket = new Socket(address, port);
-          System.out.println("接続完了！");
+          System.out.println("受信スレッド接続完了！");
         }catch(Exception e){
           e.printStackTrace();
         }
