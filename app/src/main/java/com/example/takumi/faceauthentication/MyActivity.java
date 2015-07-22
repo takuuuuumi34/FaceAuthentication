@@ -16,8 +16,7 @@ import android.widget.TextView;
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.core.Mat;
+import org.opencv.objdetect.CascadeClassifier;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -44,6 +43,8 @@ public class MyActivity extends Activity {
   String name = "";
   CharSequence nameCS;
   Handler mHandler = new Handler();
+
+  CascadeClassifier mJavaDetector;
 
   private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
     @Override
@@ -72,6 +73,7 @@ public class MyActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+        System.out.println(Environment.getExternalStorageDirectory().getPath());
     }
 
     @Override
@@ -107,11 +109,51 @@ public class MyActivity extends Activity {
     if( requestCode == 1001 ){
       if( resultCode == Activity.RESULT_OK ){
         Bitmap bmp = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath() + "/camera_test.bmp").copy(Bitmap.Config.ARGB_8888, true);
+/*
+        try {
+          // load cascade file from application resources
+          InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
+          File cascadeDir = getDir("cascade", Context.MODE_PRIVATE);
+          File mCascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
+          FileOutputStream os = new FileOutputStream(mCascadeFile);
+
+          byte[] buffer = new byte[4096];
+          int bytesRead;
+          while ((bytesRead = is.read(buffer)) != -1) {
+            os.write(buffer, 0, bytesRead);
+          }
+          is.close();
+          os.close();
+
+          mJavaDetector = new CascadeClassifier(mCascadeFile.getAbsolutePath());
+          if (mJavaDetector.empty()) {
+            mJavaDetector = null;
+          }
+
+          cascadeDir.delete();
+
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+
+        Mat img = new Mat();
+        Utils.bitmapToMat(bmp, img);
+
+        MatOfRect faceDetections = new MatOfRect();
+        mJavaDetector.detectMultiScale(img, faceDetections);
+
+        System.out.println(String.format("Detected %s faces", faceDetections.toArray().length));
+
+        for(Rect rect : faceDetections.toArray()) {
+          Core.rectangle(img, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height),
+            new Scalar(0, 255, 0), 5);
+        }
+        
+
+        Utils.matToBitmap(img, bmp);*/
         ImageView image1 = (ImageView)findViewById(R.id.imageView);
         image1.setImageBitmap(bmp);
-        Mat mat = new Mat();
-        Utils.bitmapToMat(bmp, mat);
-        System.out.println(mat.rows());
+
       }
     }
   }
