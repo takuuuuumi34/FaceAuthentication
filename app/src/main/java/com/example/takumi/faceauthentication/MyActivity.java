@@ -30,8 +30,7 @@ import java.net.Socket;
 
 public class MyActivity extends Activity {
   public static int port = 60000;
-  public static String address = "192.168.110.129";
-  //public static String address = "192.168.2.112";
+  public static String address = "192.168.110.50";
   Socket echoSocket = null;
   Socket sendSocket = null;
   FileInputStream fis = null;
@@ -40,8 +39,11 @@ public class MyActivity extends Activity {
   Reader reader = null;
   BufferedOutputStream bos = null;
   DataOutputStream dos = null;
-  String name = "";
+  String str = "";
   CharSequence nameCS;
+  CharSequence sexCS;
+  CharSequence birthCS;
+  CharSequence addressCS;
   Handler mHandler = new Handler();
 
   CascadeClassifier mJavaDetector;
@@ -109,7 +111,8 @@ public class MyActivity extends Activity {
     if( requestCode == 1001 ){
       if( resultCode == Activity.RESULT_OK ){
         Bitmap bmp = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getPath() + "/camera_test.bmp").copy(Bitmap.Config.ARGB_8888, true);
-/*
+
+/* 顔検出＆顔領域切り出し
         try {
           // load cascade file from application resources
           InputStream is = getResources().openRawResource(R.raw.lbpcascade_frontalface);
@@ -211,20 +214,36 @@ public class MyActivity extends Activity {
           din = new DataInputStream(sendSocket.getInputStream());
           bin = new BufferedInputStream(din);
           reader = new InputStreamReader(bin, "Shift_JIS");
-          name = "";
+          str = "";
           for(;;) {
             final int readChar = reader.read();
             //Streamの終わりに達して読み込むデータがない場合
             if ((char)readChar == '\0') break;
             // charとして画面出力
-            name = name + (char)readChar;
+            str = str + (char)readChar;
           }
-          nameCS = name;
+          String[] dataArray = str.split(",", 0);
+          nameCS = dataArray[0];
+          String[] array = dataArray[1].split(" ", 0);
+          birthCS = array[0];
+          if(dataArray[2].equals("True")){
+            sexCS = "女性";
+          }else if(dataArray[2].equals("False")){
+            sexCS = "男性";
+          }
+          addressCS = dataArray[3];
+
           //thread内からUI操作はできないのでhandlerにpostする。
           mHandler.post(new Runnable() {
             public void run() {
-              TextView textView = (TextView) findViewById(R.id.name);
-              textView.setText(nameCS);
+              TextView nameTextView = (TextView) findViewById(R.id.name);
+              nameTextView.setText(nameCS);
+              TextView sexTextView = (TextView) findViewById(R.id.sex);
+              sexTextView.setText(sexCS);
+              TextView birthTextView = (TextView) findViewById(R.id.birth);
+              birthTextView.setText(birthCS);
+              TextView addressTextView = (TextView) findViewById(R.id.address);
+              addressTextView.setText(addressCS);
             }
           });
           din.close();
